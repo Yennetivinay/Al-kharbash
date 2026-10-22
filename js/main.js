@@ -49,6 +49,19 @@ windows.on('scroll', function() {
     }
 });
 /*----------------------------
+ Footer year
+------------------------------ */
+    $('.js-year').text(new Date().getFullYear());
+/*----------------------------
+ Service cards: the whole card opens its page
+------------------------------ */
+    $('.img-hover-text12').on('click', function(e) {
+        var link = $(this).find('.button24 a').attr('href');
+        if (link && link !== '#' && !$(e.target).closest('a').length) {
+            window.location.href = link;
+        }
+    });
+/*----------------------------
  jQuery MeanMenu
 ------------------------------ */
     var mean_menu = $('nav#dropdown');
