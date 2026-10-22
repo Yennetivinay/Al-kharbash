@@ -80,6 +80,20 @@ textarea:focus-visible {
     box-shadow: 0 0 0 3px rgba(128,0,23,0.12);
 }
 
+/* ---------- Service detail pages ---------- */
+/* banners are set inline with no position, which pins them to the top-left corner */
+.page-area[style] {
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+}
+/* photo row: three equal cards whatever the source image size */
+.single-services-page .brd img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+.single-services-page .brd { margin-bottom: 30px; }
+
 /* ---------- Service cards (home page) ---------- */
 .img-hover-text12.sty2.has-link { cursor: pointer; }
 .img-hover-text12.sty2 {
