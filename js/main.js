@@ -55,7 +55,10 @@ windows.on('scroll', function() {
 /*----------------------------
  Service cards: the whole card opens its page
 ------------------------------ */
-    $('.img-hover-text12').on('click', function(e) {
+    $('.img-hover-text12').each(function() {
+        var link = $(this).find('.button24 a').attr('href');
+        $(this).toggleClass('has-link', !!link && link !== '#');
+    }).on('click', function(e) {
         var link = $(this).find('.button24 a').attr('href');
         if (link && link !== '#' && !$(e.target).closest('a').length) {
             window.location.href = link;
