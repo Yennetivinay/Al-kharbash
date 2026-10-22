@@ -254,29 +254,15 @@ textarea:focus-visible {
 }
 
 /* ---------- Request Quotation (js/quote.js) ---------- */
-.quote-fab {
-    position: fixed;
-    right: 30px;
-    bottom: 100px; /* sits above the scroll-to-top button */
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
+.quote-btn {
     border: 0;
-    border-radius: 30px;
-    background: #800017;
-    color: #fff;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 6px 20px rgba(128,0,23,0.35);
+    margin-top: 10px;
     cursor: pointer;
-    transition: background 0.25s, transform 0.25s;
+    transition: background 0.25s;
 }
-.quote-fab:hover, .quote-fab:focus-visible { background: #5e0011; transform: translateY(-2px); }
-.quote-fab i { font-size: 16px; }
-.quote-fab-short { display: none; }
+.quote-btn:hover, .quote-btn:focus-visible { background: #5e0011; color: #fff; }
+.quote-btn i { margin-right: 6px; }
+.quote-btn-center { text-align: center; padding-top: 40px; clear: both; }
 
 .quote-modal {
     position: fixed;
@@ -362,10 +348,6 @@ body.quote-open { overflow: hidden; }
 .quote-note { margin: 10px 0 0; font-size: 12px; color: #888; text-align: center; }
 
 @media (max-width: 767px) {
-    .quote-fab { right: 16px; bottom: 16px; padding: 12px 16px; }
-    .quote-fab-long { display: none; } /* short label on phones */
-    .quote-fab-short { display: inline; }
-    #scrollUp { bottom: 80px !important; right: 16px !important; }
     .quote-dialog { padding: 24px 18px 18px; }
     .quote-row { display: block; }
 }

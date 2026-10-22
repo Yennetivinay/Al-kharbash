@@ -1,4 +1,5 @@
-/* Request Quotation: floating button on every page that opens a short form.
+/* Request Quotation: a button on the service pages that opens a short form.
+   Detail pages get it under the intro text; the Services page gets it below the cards.
    On submit the details become a ready-written email (via the email chooser in
    email-menu.js), the same way the Apply Now form works — no server needed. */
 (function () {
@@ -24,10 +25,14 @@
         'civil-masonry.html': 'Civil and Masonry'
     };
 
+    var intro = document.querySelector('.single-services-page .col-md-9 .single-well');
+    var cards = document.querySelector('.all-services');
+    if (!intro && !cards) return;
+
     var button = document.createElement('button');
     button.type = 'button';
-    button.className = 'quote-fab';
-    button.innerHTML = '<i class="fa fa-file-text-o"></i><span class="quote-fab-long">Request Quotation</span><span class="quote-fab-short">Quote</span>';
+    button.className = 'about-btn quote-btn';
+    button.innerHTML = '<i class="fa fa-file-text-o"></i> Request Quotation';
     button.setAttribute('aria-haspopup', 'dialog');
 
     var modal = document.createElement('div');
@@ -54,7 +59,14 @@
         '  </form>' +
         '</div>';
 
-    document.body.appendChild(button);
+    if (intro) {
+        intro.appendChild(button);
+    } else {
+        var wrap = document.createElement('div');
+        wrap.className = 'quote-btn-center';
+        wrap.appendChild(button);
+        cards.parentNode.parentNode.appendChild(wrap);
+    }
     document.body.appendChild(modal);
 
     var form = modal.querySelector('form');
