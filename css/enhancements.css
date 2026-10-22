@@ -80,38 +80,6 @@ textarea:focus-visible {
     box-shadow: 0 0 0 3px rgba(128,0,23,0.12);
 }
 
-/* ---------- Service detail pages ---------- */
-.service-icon-box {
-    background: #800017;
-    border-radius: 6px;
-    padding: 36px 24px;
-    text-align: center;
-}
-.service-icon-box img { max-width: 140px; width: 100%; }
-.single-services-page .brd img { border-radius: 4px; }
-.service-gallery-item { margin-bottom: 30px; }
-@media (max-width: 767px) {
-    .service-icon-box { padding: 24px; }
-    .service-icon-box img { max-width: 90px; }
-}
-.service-cta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    background: #f8f1f2;
-    border-left: 4px solid #800017;
-    border-radius: 4px;
-    padding: 28px 32px;
-    margin-top: 10px;
-}
-.service-cta h4 { margin: 0 0 6px; color: #800017; }
-.service-cta p { margin: 0; }
-.service-cta-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.service-cta-back { color: #800017; font-weight: 700; }
-.service-cta-back:hover { color: #5e0011; text-decoration: underline; }
-
 /* ---------- Service cards (home page) ---------- */
 .img-hover-text12.sty2.has-link { cursor: pointer; }
 .img-hover-text12.sty2 {
