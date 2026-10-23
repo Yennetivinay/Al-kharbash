@@ -1,6 +1,6 @@
 /* Apply Now form: turns the applicant's details into a ready-written email to HR
    (via the email chooser in email-menu.js). The applicant attaches their CV and sends.
-   Opened as apply-now.html?job=<position> from a vacancy, or without ?job for a general CV. */
+   The applicant picks a position from the dropdown; apply-now.html?job=<position> pre-selects it. */
 (function () {
     'use strict';
 
@@ -9,11 +9,7 @@
     if (!form) return;
 
     var job = new URLSearchParams(window.location.search).get('job');
-    if (job) {
-        var pos = document.getElementById('applyPosition');
-        pos.querySelector('strong').textContent = job;
-        pos.hidden = false;
-    }
+    if (job) document.getElementById('position').value = job;
 
     function val(id) {
         return document.getElementById(id).value.trim();
@@ -45,10 +41,11 @@
         }
 
         var cvName = cvInput.files[0].name;
-        var subject = (job ? 'Job Application: ' + job : 'CV Submission') + ' - ' + val('fname');
+        var position = val('position');
+        var subject = (position === 'General application' ? 'CV Submission' : 'Job Application: ' + position) + ' - ' + val('fname');
         // Qualification and Covering Letter are optional
         var lines = [
-            job ? 'Position: ' + job : 'Position: General application',
+            'Position: ' + position,
             'Name: ' + val('fname'),
             'Email: ' + val('remail'),
             'Phone Number: ' + val('phone'),

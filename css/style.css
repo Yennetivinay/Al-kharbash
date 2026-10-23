@@ -3633,23 +3633,8 @@ span.email-notes{
 .email-menu a, .email-menu button { display: block; width: 100%; padding: 8px 16px; color: #262626; background: none; border: 0; text-align: left; font: inherit; cursor: pointer; text-decoration: none; }
 .email-menu a:hover, .email-menu button:hover, .email-menu a:focus, .email-menu button:focus { background: #f5eef0; color: #800017; text-decoration: none; outline: none; }
 .email-menu i { width: 20px; color: #800017; }
-/* Careers page */
-.careers-intro { line-height: 1.6; color: #444; }
-.career-job { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); border-left: 4px solid #800017; padding: 30px; margin: 30px 0 20px; }
-.career-job h3 { color: #800017; margin-top: 0; }
-.career-job .career-location { color: #444; font-weight: 600; }
-.career-job .career-location i { color: #800017; margin-right: 5px; }
-.career-job p a { color: #800017; font-weight: 600; }
-.career-job .about-btn { margin-top: 10px; }
-.career-cv { text-align: right; }
-@media (max-width: 767px) {
-.career-job { padding: 20px; }
-.career-cv { text-align: left; }
-}
 /* Apply Now page */
 .apply-page h4 { color: #800017; margin-bottom: 10px; }
-.apply-page .apply-position { font-size: 16px; color: #444; }
-.apply-page .apply-position strong { color: #800017; }
 .apply-page .contact-form { margin-top: 25px; }
 .apply-page .form-control,
 .apply-page .contact-form input[type="text"] { border: 1px solid #ccc; border-radius: 0; height: 50px; margin-bottom: 15px; padding: 6px 12px; box-shadow: none; }

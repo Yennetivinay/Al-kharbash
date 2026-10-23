@@ -210,12 +210,58 @@
     <div class="row">
       <div class="col-xs-12">
         <h4>SUBMIT YOUR C.V. </h4>
-        <p class="apply-position" id="applyPosition" hidden>Position: <strong></strong></p>
         <p>Please use the form below to send us your C.V. Only candidates found suitable for potential opportunities will be contacted.</p>
       </div>
     </div>
     <form id="applyForm" class="contact-form" novalidate>
       <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <select name="position" id="position" required class="form-control">
+            <option value="">Position Applying For *</option>
+            <optgroup label="Facilities Management">
+              <option>Facility Manager</option>
+              <option>Facility Supervisor</option>
+            </optgroup>
+            <optgroup label="General Maintenance">
+              <option>Maintenance Technician</option>
+              <option>Handyman</option>
+            </optgroup>
+            <optgroup label="Security Guard Services">
+              <option>Security Guard</option>
+              <option>Security Supervisor</option>
+            </optgroup>
+            <optgroup label="Cleaning Services">
+              <option>Cleaner</option>
+              <option>Cleaning Supervisor</option>
+            </optgroup>
+            <optgroup label="Air Conditioning">
+              <option>AC Technician</option>
+              <option>HVAC Engineer</option>
+            </optgroup>
+            <optgroup label="Solar Lighting">
+              <option>Solar Technician</option>
+            </optgroup>
+            <optgroup label="Carpentry">
+              <option>Carpenter</option>
+            </optgroup>
+            <optgroup label="Electro Mechanical">
+              <option>Electrician</option>
+              <option>Plumber</option>
+              <option>MEP Engineer</option>
+            </optgroup>
+            <optgroup label="Civil and Masonry">
+              <option>Civil Supervisor</option>
+              <option>Mason</option>
+              <option>Tile Fixer</option>
+              <option>Painter</option>
+            </optgroup>
+            <optgroup label="Office and Support">
+              <option>Driver</option>
+              <option>Administration / Office Staff</option>
+            </optgroup>
+            <option value="General application">Other / General application</option>
+          </select>
+        </div>
         <div class="col-md-6 col-xs-12"><input type="text" id="fname" name="fname" class="form-control" placeholder="Name *" required></div>
         <div class="col-md-6 col-xs-12"><input type="email" id="remail" name="remail" class="email form-control" placeholder="Email *" required></div>
         <div class="col-md-6 col-xs-12"><input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone Number *" required></div>
@@ -297,7 +343,7 @@
             <div class="footer-head">
               <h4>Careers & Supplies</h4>
               <h5>Careers</h5>
-              <p> <a href="careers.html#vacancies">Available Vacancies </a> <br>
+              <p> 
                 <a href="apply-now.html">Submit Resume </a> </p>
             </div>
           </div>
