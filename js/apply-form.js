@@ -1,10 +1,9 @@
-/* Apply Now form: turns the applicant's details into a ready-written email to HR
-   (via the email chooser in email-menu.js). The applicant attaches their CV and sends.
+/* Apply Now form: emails the applicant's details and CV to hr@akgm.ae from
+   webadminakgm@gmail.com (js/form-mailer.js) — no email app needed.
    The applicant picks a position from the dropdown; apply-now.html?job=<position> pre-selects it. */
 (function () {
     'use strict';
 
-    var HR_EMAIL = 'hr@akgm.ae';
     var form = document.getElementById('applyForm');
     if (!form) return;
 
@@ -40,34 +39,42 @@
             return;
         }
 
-        var cvName = cvInput.files[0].name;
         var position = val('position');
         var subject = (position === 'General application' ? 'CV Submission' : 'Job Application: ' + position) + ' - ' + val('fname');
-        // Qualification and Covering Letter are optional
-        var lines = [
-            'Position: ' + position,
-            'Name: ' + val('fname'),
-            'Email: ' + val('remail'),
-            'Phone Number: ' + val('phone'),
-            'Gender: ' + val('gender'),
-            'Qualification: ' + (val('quali') || 'Not provided'),
-            'Age: ' + val('age'),
-            'Nationality: ' + val('nation')
-        ];
-        if (val('cmessage')) lines.push('', 'Covering Letter:', val('cmessage'));
-        lines.push('', 'CV attached: ' + cvName);
-        var body = lines.join('\n');
-
-        var msg = document.getElementById('applyMsg');
-        msg.innerHTML = '<i class="fa fa-paperclip"></i> Choose how to send your application below, then <strong>attach your CV</strong> (<span></span>) before pressing Send.';
-        msg.querySelector('span').textContent = cvName;
-        msg.hidden = false;
-
         var button = document.getElementById('rsubmit');
-        if (window.EmailMenu) {
-            window.EmailMenu.open(button, HR_EMAIL, subject, body);
-        } else {
-            window.location.href = 'mailto:' + HR_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        }
+        var msg = document.getElementById('applyMsg');
+        button.disabled = true;
+        button.textContent = 'SENDING...';
+        msg.hidden = true;
+
+        // Qualification and Covering Letter are optional
+        window.FormMailer.send('resume', {
+            subject: subject,
+            replyTo: val('remail'),
+            fields: {
+                'Position': position,
+                'Name': val('fname'),
+                'Email': val('remail'),
+                'Phone Number': val('phone'),
+                'Gender': val('gender'),
+                'Qualification': val('quali'),
+                'Age': val('age'),
+                'Nationality': val('nation'),
+                'Covering Letter': val('cmessage')
+            },
+            botcheck: form.elements['botcheck'].checked,
+            file: cvInput.files[0]
+        }).then(function () {
+            form.reset();
+            window.FormMailer.showSuccess('Application Submitted Successfully', 'Thank you for applying. Our HR team will review your CV and contact you if you are shortlisted.');
+        }, function (error) {
+            msg.className = 'apply-msg apply-msg-error';
+            msg.innerHTML = '<i class="fa fa-exclamation-circle"></i> <span></span>';
+            msg.querySelector('span').textContent = error;
+            msg.hidden = false;
+        }).then(function () {
+            button.disabled = false;
+            button.textContent = 'SUBMIT';
+        });
     });
 })();

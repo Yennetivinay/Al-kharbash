@@ -2074,6 +2074,11 @@ div#preloader {
     color: #001033;
     margin: 5px 0px;
 }
+.fun_text span .counter {
+    display: inline;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+}
 .fun_text > h5 {
     color: #777;
     font-size: 16px;
@@ -2935,7 +2940,8 @@ span.email-notes{
 .project-details {
     padding: 30px; 
 }
-.ourteam{box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);  padding: 10px; display: flex; margin:10px 0px;}
+.ourteam{box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);  padding: 10px; display: flex; align-items: center; margin:10px 0px 30px;}
+.ourteam .project-image img { display: block; width: 100%; height: auto; }
 .project-details p {
     margin-bottom: 0px; font-size:15px; text-align: justify;
 }
@@ -3645,8 +3651,44 @@ span.email-notes{
 .apply-page .req { color: #800017; font-weight: 700; }
 .apply-page .apply-cv-note i, .apply-page .apply-msg i { color: #800017; margin-right: 5px; }
 .apply-page .apply-msg { background: #f5eef0; border-left: 3px solid #800017; padding: 10px 15px; margin-bottom: 15px; color: #444; }
+.apply-page .apply-msg-error { background: #fdeeee; border-left-color: #c62828; color: #c62828; }
+.apply-page .apply-msg-error i { color: #c62828; }
+.apply-page .contact-btn:disabled { opacity: 0.7; cursor: wait; }
 .apply-page .contact-btn { background: #800017; border: 1px solid #800017; color: #fff; font-weight: 700; padding: 12px 40px; transition: 0.3s; }
 .apply-page .contact-btn:hover { background: #fff; color: #800017; }
 /*--------------------------------*/
 /* .End CSS
 /*--------------------------------*/
+/* Our Clients carousel: same-height logos, centred in equal boxes */
+.project-carousel .brand-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    padding: 10px;
+}
+.project-carousel .brand-items img {
+    width: auto !important;
+    max-width: 100%;
+    max-height: 100px;
+    margin: 0 auto;
+}
+
+/* Forms: after a submit attempt, missing or wrong required fields show in company red */
+form.show-errors :invalid:not(fieldset):not(form) {
+    border-color: #800017 !important;
+    box-shadow: 0 0 0 1px #800017;
+}
+form.show-errors :invalid::placeholder {
+    color: #800017;
+    opacity: 1;
+}
+form.show-errors :invalid::-webkit-input-placeholder { color: #800017; }
+form.show-errors :invalid:-ms-input-placeholder { color: #800017; }
+form.show-errors select:invalid,
+.apply-page form.show-errors select.form-control:invalid {
+    color: #800017;
+}
+form.show-errors select:invalid option {
+    color: #333;
+}

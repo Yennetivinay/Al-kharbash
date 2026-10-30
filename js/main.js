@@ -2,8 +2,33 @@
  "use strict";
 
 /*--------------------------
+ Start at the top on refresh (links to a #section still jump to it)
+---------------------------- */
+	if ('scrollRestoration' in history) {
+		history.scrollRestoration = 'manual';
+	}
+	$(window).on('load', function () {
+		if (!window.location.hash) {
+			window.scrollTo(0, 0);
+		}
+	});
+
+/*--------------------------
+ Forms: once a visitor tries to submit with missing or wrong fields, mark the form
+ so CSS can highlight those fields in red (each clears as soon as it is valid)
+---------------------------- */
+	document.addEventListener('invalid', function (e) {
+		var form = e.target.form;
+		if (form) form.classList.add('show-errors');
+	}, true);
+	// a form cleared after sending starts fresh, without highlights
+	document.addEventListener('reset', function (e) {
+		e.target.classList.remove('show-errors');
+	}, true);
+
+/*--------------------------
 preloader
----------------------------- */	
+---------------------------- */
 	$(window).on('load',function(){
 		var pre_loader = $('#preloader')
 	pre_loader.fadeOut('slow',function(){$(this).remove();});
@@ -83,11 +108,33 @@ windows.on('scroll', function() {
 /*----------------------------
  Counter js active
 ------------------------------ */
-    var count = $('.counter');
-    count.counterUp({
-		delay: 40,
-		time: 3000
-	});
+    // Count from 0 to the number on every frame, easing out, once the counter scrolls into view
+    function animateCounter(el) {
+        var target = parseInt(el.getAttribute('data-target'), 10);
+        var duration = 2500;
+        var start = null;
+        function step(now) {
+            if (start === null) start = now;
+            var progress = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(target * eased);
+            if (progress < 1) window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    $('.counter').each(function () {
+        var el = this;
+        el.setAttribute('data-target', el.textContent.replace(/[^0-9]/g, ''));
+        if (!('IntersectionObserver' in window) || !window.requestAnimationFrame) return;
+        el.textContent = '0';
+        var observer = new IntersectionObserver(function (entries) {
+            if (!entries[0].isIntersecting) return;
+            observer.disconnect();
+            animateCounter(el);
+        }, { threshold: 0.5 });
+        observer.observe(el);
+    });
 	
 /*--------------------------
  collapse
@@ -190,16 +237,16 @@ windows.on('scroll', function() {
         dots:false,
         responsive:{
             0:{
-                items:1
-            },
-            700:{
                 items:2
             },
-            900:{
+            500:{
                 items:3
             },
-            1000:{
+            700:{
                 items:4
+            },
+            1000:{
+                items:6
             }
         }
     });
@@ -293,31 +340,39 @@ windows.on('scroll', function() {
 			submitForm();
 		}
 	});
+	// Emailed to info@akgm.ae from webadminakgm@gmail.com (js/form-mailer.js) — no email app needed
 	function submitForm(){
-		var name = $("#name").val();
-		var email = $("#email").val();
-		var msg_subject = $("#msg_subject").val();
-		var message = $("#message").val();
+		var name = $.trim($("#name").val());
+		var email = $.trim($("#email").val());
+		var msg_subject = $.trim($("#msg_subject").val());
+		var message = $.trim($("#message").val());
+		var $button = $("#submit");
 
-
-		$.ajax({
-			type: "POST",
-			url: "assets/contact.php",
-			data: "name=" + name + "&email=" + email + "&msg_subject=" + msg_subject + "&message=" + message,
-			success : function(text){
-				if (text === "success"){
-					formSuccess();
-				} else {
-					formError();
-					submitMSG(false,text);
-				}
-			}
+		$button.prop("disabled", true).text("Sending...");
+		window.FormMailer.send('contact', {
+			subject: 'Website Enquiry: ' + msg_subject + ' - ' + name,
+			replyTo: email,
+			fields: {
+				'Name': name,
+				'Email': email,
+				'Subject': msg_subject,
+				'Message': message
+			},
+			botcheck: $("#contactForm [name=botcheck]").prop("checked")
+		}).then(function () {
+			formSuccess();
+		}, function (error) {
+			formError();
+			submitMSG(false, error);
+		}).then(function () {
+			$button.prop("disabled", false).text("Submit");
 		});
 	}
 
 	function formSuccess(){
 		$("#contactForm")[0].reset();
-		submitMSG(true, "Message Submitted!")
+		$("#msgSubmit").addClass("hidden").text("");
+		window.FormMailer.showSuccess("Message Sent Successfully", "Thank you for contacting us. Our team will get back to you soon.");
 	}
 
 	function formError(){

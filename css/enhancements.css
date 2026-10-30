@@ -346,6 +346,9 @@ body.quote-open { overflow: hidden; }
 }
 .quote-submit:hover { background: #5e0011; }
 .quote-note { margin: 10px 0 0; font-size: 12px; color: #888; text-align: center; }
+.quote-note:empty { display: none; }
+.quote-note-error { color: #c62828; font-size: 14px; }
+.quote-submit:disabled { opacity: 0.7; cursor: wait; }
 
 @media (max-width: 767px) {
     .quote-dialog { padding: 24px 18px 18px; }
@@ -374,3 +377,55 @@ body.quote-open { overflow: hidden; }
     box-shadow: 0 0 0 3px rgba(128,0,23,0.12);
     outline: none;
 }
+
+/* ---------- "Sent successfully" dialog (all forms) ---------- */
+.form-success-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483001; /* above the quotation form */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0,0,0,0.55);
+    animation: formSuccessFade 0.2s ease-out;
+}
+.form-success-dialog {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 6px;
+    border-top: 5px solid #800017;
+    padding: 34px 30px 28px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: formSuccessPop 0.25s ease-out;
+}
+.form-success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #800017;
+    color: #fff;
+    font-size: 30px;
+    line-height: 64px;
+}
+.form-success-dialog h3 { margin: 0 0 10px; color: #800017; font-size: 22px; }
+.form-success-dialog p { margin: 0 0 24px; color: #555; font-size: 15px; line-height: 1.6; }
+.form-success-ok {
+    min-width: 140px;
+    padding: 12px 30px;
+    border: 0;
+    border-radius: 3px;
+    background: #800017;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.25s;
+}
+.form-success-ok:hover,
+.form-success-ok:focus { background: #5e0011; outline: none; box-shadow: 0 0 0 3px rgba(128,0,23,0.25); }
+@keyframes formSuccessFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes formSuccessPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }

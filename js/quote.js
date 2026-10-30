@@ -1,11 +1,8 @@
 /* Request Quotation: a button on the service pages that opens a short form.
    Detail pages get it under the intro text; the Services page gets it below the cards.
-   On submit the details become a ready-written email (via the email chooser in
-   email-menu.js), the same way the Apply Now form works — no server needed. */
+   On submit the details are emailed to info@akgm.ae from webadminakgm@gmail.com (js/form-mailer.js). */
 (function () {
     'use strict';
-
-    var QUOTE_EMAIL = 'akco@alkharbashgroup.com';
 
     var SERVICES = [
         'Facilities Management', 'General Maintenance', 'Security Guard Services', 'Cleaning Services',
@@ -44,6 +41,7 @@
         '  <h3 id="quoteTitle">Request a Quotation</h3>' +
         '  <p class="quote-intro">Tell us what you need and our team will get back to you.</p>' +
         '  <form class="quote-form" novalidate>' +
+        '    <input type="checkbox" name="botcheck" style="display: none;" tabindex="-1" autocomplete="off">' +
         '    <label>Name *<input type="text" name="name" required autocomplete="name"></label>' +
         '    <div class="quote-row">' +
         '      <label>Phone *<input type="tel" name="phone" required autocomplete="tel"></label>' +
@@ -55,7 +53,7 @@
         '    <label>Property location<input type="text" name="location" placeholder="e.g. Al Barsha, Dubai"></label>' +
         '    <label>Details<textarea name="details" rows="4" placeholder="Describe the work, size of the property, preferred dates…"></textarea></label>' +
         '    <button type="submit" class="quote-submit">Send Request</button>' +
-        '    <p class="quote-note">You\'ll choose Gmail, Outlook or your email app to send it.</p>' +
+        '    <p class="quote-note" role="status" aria-live="polite"></p>' +
         '  </form>' +
         '</div>';
 
@@ -105,22 +103,34 @@
             return;
         }
         function val(n) { return form.elements[n].value.trim(); }
-        var subject = 'Quotation Request: ' + val('service') + ' - ' + val('name');
-        var body = [
-            'Service: ' + val('service'),
-            'Name: ' + val('name'),
-            'Phone: ' + val('phone'),
-            'Email: ' + val('email'),
-            'Location: ' + (val('location') || 'Not provided'),
-            '',
-            'Details:',
-            val('details') || 'Not provided'
-        ].join('\n');
-        if (window.EmailMenu) {
-            window.EmailMenu.open(form.querySelector('.quote-submit'), QUOTE_EMAIL, subject, body);
-        } else {
-            window.location.href = 'mailto:' + QUOTE_EMAIL + '?subject=' + encodeURIComponent(subject) +
-                '&body=' + encodeURIComponent(body);
-        }
+        var submit = form.querySelector('.quote-submit');
+        var note = form.querySelector('.quote-note');
+        submit.disabled = true;
+        submit.textContent = 'Sending...';
+        note.className = 'quote-note';
+        note.textContent = '';
+        window.FormMailer.send('quote', {
+            subject: 'Quotation Request: ' + val('service') + ' - ' + val('name'),
+            replyTo: val('email'),
+            fields: {
+                'Service': val('service'),
+                'Name': val('name'),
+                'Phone': val('phone'),
+                'Email': val('email'),
+                'Location': val('location'),
+                'Details': val('details')
+            },
+            botcheck: form.elements['botcheck'].checked
+        }).then(function () {
+            form.reset();
+            close();
+            window.FormMailer.showSuccess('Quotation Request Sent', 'Thank you! Our team will review your request and contact you soon.');
+        }, function (error) {
+            note.className = 'quote-note quote-note-error';
+            note.textContent = error;
+        }).then(function () {
+            submit.disabled = false;
+            submit.textContent = 'Send Request';
+        });
     });
 })();
